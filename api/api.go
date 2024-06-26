@@ -63,14 +63,6 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	// write your code
 }
 
-// AnonymousField example
-//
-//	@Summary	use Anonymous field
-//	@Success	200	{object}	web.RevValue	"ok"
-func AnonymousField() {
-
-}
-
 // Pet3 example
 type Pet3 struct {
 	ID int `json:"id"`
