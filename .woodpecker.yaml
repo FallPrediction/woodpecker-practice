@@ -1,17 +1,17 @@
-pipeline:
-  swagger:
-    - name: check swagger
-      image: golang
-      commands:
-        - go install github.com/swaggo/swag/cmd/swag@latest
-        - export SWAGGER_JSON_CHECKSUM_BEFORE=$(md5sum docs/swagger.json | cut -d ' ' -f 1)
-        - export SWAGGER_YAML_CHECKSUM_BEFORE=$(md5sum docs/swagger.yaml | cut -d ' ' -f 1)
-        - swag init
-        - export SWAGGER_JSON_CHECKSUM_AFTER=$(md5sum docs/swagger.json | cut -d ' ' -f 1)
-        - export SWAGGER_YAML_CHECKSUM_AFTER=$(md5sum docs/swagger.yaml | cut -d ' ' -f 1)
-        - if [ "$SWAGGER_JSON_CHECKSUM_BEFORE" != "$SWAGGER_JSON_CHECKSUM_AFTER" ]; then exit 1; fi
-        - if [ "$SWAGGER_YAML_CHECKSUM_BEFORE" != "$SWAGGER_YAML_CHECKSUM_AFTER" ]; then exit 1; fi
-        - exit 0
-      when:
-        event:
-          - pull_request
+steps:
+  - name: check swagger
+    image: golang
+    commands:
+      - go install github.com/swaggo/swag/cmd/swag@latest
+      - export SWAGGER_JSON_CHECKSUM_BEFORE=$(md5sum docs/swagger.json | cut -d ' ' -f 1)
+      - export SWAGGER_YAML_CHECKSUM_BEFORE=$(md5sum docs/swagger.yaml | cut -d ' ' -f 1)
+      - swag init
+      - export SWAGGER_JSON_CHECKSUM_AFTER=$(md5sum docs/swagger.json | cut -d ' ' -f 1)
+      - export SWAGGER_YAML_CHECKSUM_AFTER=$(md5sum docs/swagger.yaml | cut -d ' ' -f 1)
+      - if [ "$SWAGGER_JSON_CHECKSUM_BEFORE" != "$SWAGGER_JSON_CHECKSUM_AFTER" ]; then exit 1; fi
+      - if [ "$SWAGGER_YAML_CHECKSUM_BEFORE" != "$SWAGGER_YAML_CHECKSUM_AFTER" ]; then exit 1; fi
+      - exit 0
+
+when:
+  event:
+    - pull_request
