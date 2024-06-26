@@ -21,7 +21,20 @@ services:
       # 剛才產生的隨機字串
       - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
 
-  woodpecker-agent:
+  woodpecker-agent-1:
+    image: woodpeckerci/woodpecker-agent:latest
+    command: agent
+    restart: unless-stopped
+    depends_on:
+      - woodpecker-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WOODPECKER_SERVER=woodpecker-server:9000
+      # 剛才產生的隨機字串
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+
+  woodpecker-agent-2:
     image: woodpeckerci/woodpecker-agent:latest
     command: agent
     restart: unless-stopped
