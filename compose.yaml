@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  woodpecker-server:
+    image: woodpeckerci/woodpecker-server:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - woodpecker-server-data:/var/lib/woodpecker/
+    environment:
+      # Forge 中每個帳號都可以登入 Woodpecker
+      - WOODPECKER_OPEN=true
+      # 需要設FQDN，如https://wookpecker.example.com
+      - WOODPECKER_HOST=${WOODPECKER_HOST}
+      # Forge 使用 Github
+      - WOODPECKER_GITHUB=true
+      # Github OAuth client ID
+      - WOODPECKER_GITHUB_CLIENT=${WOODPECKER_GITHUB_CLIENT}
+      # Github OAuth secret
+      - WOODPECKER_GITHUB_SECRET=${WOODPECKER_GITHUB_SECRET}
+      # 剛才產生的隨機字串
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+
+  woodpecker-agent:
+    image: woodpeckerci/woodpecker-agent:latest
+    command: agent
+    restart: unless-stopped
+    depends_on:
+      - woodpecker-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WOODPECKER_SERVER=woodpecker-server:9000
+      # 剛才產生的隨機字串
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+
+volumes:
+  woodpecker-server-data:
