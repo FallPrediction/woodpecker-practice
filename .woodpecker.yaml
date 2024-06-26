@@ -1,6 +1,6 @@
 steps:
   - name: check swagger
-    image: golang
+    image: golang:${GO_VERSION}
     commands:
       - go install github.com/swaggo/swag/cmd/swag@latest
       - export SWAGGER_JSON_CHECKSUM_BEFORE=$(md5sum docs/swagger.json | cut -d ' ' -f 1)
@@ -11,3 +11,15 @@ steps:
       - if [ "$SWAGGER_JSON_CHECKSUM_BEFORE" != "$SWAGGER_JSON_CHECKSUM_AFTER" ]; then exit 1; fi
       - if [ "$SWAGGER_YAML_CHECKSUM_BEFORE" != "$SWAGGER_YAML_CHECKSUM_AFTER" ]; then exit 1; fi
       - exit 0
+
+  - name: golang ci
+    image: golang:${GO_VERSION}
+    commands:
+      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
+      - golangci-lint --version
+      - golangci-lint run
+
+matrix:
+  GO_VERSION:
+    - 1.21.11
+    - 1.22.4
