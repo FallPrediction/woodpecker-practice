@@ -13,5 +13,4 @@ steps:
       - exit 0
 
 when:
-  event:
-    - pull_request
+  - event: pull_request
