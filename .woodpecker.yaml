@@ -11,6 +11,6 @@ steps:
       - if [ "$SWAGGER_JSON_CHECKSUM_BEFORE" != "$SWAGGER_JSON_CHECKSUM_AFTER" ]; then exit 1; fi
       - if [ "$SWAGGER_YAML_CHECKSUM_BEFORE" != "$SWAGGER_YAML_CHECKSUM_AFTER" ]; then exit 1; fi
       - exit 0
-    when:
-      event:
-        - pull_request
+
+when:
+  event: pull_request
