@@ -6,4 +6,4 @@ The penultimate commit will not pass the pipeline because the codes in the main 
 
 The last commit will not pass the pipeline because the swagger files haven't been changed along with the swagger comments.
 
-For see more information, please visit my blog post.
+For see more information, please visit [my blog post](http://localhost:9090/blog/posts/woodpecker/).
